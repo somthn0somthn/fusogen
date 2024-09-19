@@ -30,6 +30,14 @@
           "writable": true
         },
         {
+          "name": "treasury_a",
+          "writable": true
+        },
+        {
+          "name": "treasury_b",
+          "writable": true
+        },
+        {
           "name": "user",
           "writable": true,
           "signer": true
@@ -77,6 +85,14 @@
           },
           {
             "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury_a",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasury_b",
             "type": "pubkey"
           }
         ]

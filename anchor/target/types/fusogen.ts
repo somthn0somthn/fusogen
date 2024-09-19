@@ -36,6 +36,14 @@ export type Fusogen = {
           "writable": true
         },
         {
+          "name": "treasuryA",
+          "writable": true
+        },
+        {
+          "name": "treasuryB",
+          "writable": true
+        },
+        {
           "name": "user",
           "writable": true,
           "signer": true
@@ -83,6 +91,14 @@ export type Fusogen = {
           },
           {
             "name": "mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasuryA",
+            "type": "pubkey"
+          },
+          {
+            "name": "treasuryB",
             "type": "pubkey"
           }
         ]
