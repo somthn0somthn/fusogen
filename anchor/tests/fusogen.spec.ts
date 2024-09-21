@@ -17,7 +17,12 @@ import {
 
 jest.setTimeout(30000);
 
-//CONT :: trial the burn code, cleanup this testing code
+const INITIAL_BALANCE = 10 * LAMPORTS_PER_SOL;
+const MINT_AMOUNT = 1000;
+
+//CONT :: cleanup this testing code
+
+
 
 describe('fusogen', () => {
   const provider = anchor.AnchorProvider.local();
@@ -39,83 +44,34 @@ describe('fusogen', () => {
   let daoBTokenAccount: PublicKey;
   let daoBurnOnlyTokenAccount: PublicKey;
 
+  async function airdropSol(connection, publicKey, amount) {
+    const signature = await connection.requestAirdrop(publicKey, amount);
+    await connection.confirmTransaction(signature);
+  }
+
+  async function createTokenMint(connection, payer, mintAuthority, decimals = 9) {
+    return await createMint(connection, payer, mintAuthority, null, decimals);
+  }
+
+  async function createTokenAccount(connection, payer, mint, owner) {
+    return await createAccount(connection, payer, mint, owner);
+  }
 
   beforeAll(async () => {
-    await provider.connection.confirmTransaction(
-      await provider.connection.requestAirdrop(
-        daoA.publicKey,
-        10 * LAMPORTS_PER_SOL
-      )
-    );
 
-    await provider.connection.confirmTransaction(
-      await provider.connection.requestAirdrop(
-        daoB.publicKey,
-        10 * LAMPORTS_PER_SOL
-      )
-    );
+    await airdropSol(provider.connection, daoA.publicKey, 10 * LAMPORTS_PER_SOL);
+    await airdropSol(provider.connection, daoB.publicKey, 10 * LAMPORTS_PER_SOL);
+    await airdropSol(provider.connection, daoBurnOnly.publicKey, 10 * LAMPORTS_PER_SOL);
+    await airdropSol(provider.connection, user.publicKey, 10 * LAMPORTS_PER_SOL);
 
-    await provider.connection.confirmTransaction(
-      await provider.connection.requestAirdrop(
-        daoBurnOnly.publicKey,
-        10 * LAMPORTS_PER_SOL
-      )
-    );
+    daoAMint = await createTokenMint(provider.connection, daoA, daoA.publicKey); 
+    daoBMint = await createTokenMint(provider.connection, daoB, daoB.publicKey);
+    daoBurnOnlyMint = await createTokenMint(provider.connection, daoBurnOnly, daoBurnOnly.publicKey);
 
-    await provider.connection.confirmTransaction(
-      await provider.connection.requestAirdrop(
-        user.publicKey,
-        10 * LAMPORTS_PER_SOL
-      )
-    );
-
-    daoAMint = await createMint(
-      provider.connection,
-      daoA,
-      daoA.publicKey, // mint authority
-      null,
-      10
-    )
-
-    daoBMint = await createMint(
-      provider.connection,
-      daoB,
-      daoB.publicKey, // mint authority
-      null,
-      10
-    )
-
-    daoBurnOnlyMint = await createMint(
-      provider.connection,
-      daoBurnOnly,
-      daoBurnOnly.publicKey, // mint authority
-      null,
-      10
-    )
-
-    daoATokenAccount = await createAccount(
-      provider.connection,
-      daoA,
-      daoAMint,
-      daoA.publicKey,
-    )
-
-    daoBTokenAccount = await createAccount(
-      provider.connection,
-      daoB,
-      daoBMint,
-      daoB.publicKey,
-    )
-
-    daoBurnOnlyTokenAccount = await createAccount(
-      provider.connection,
-      daoBurnOnly,
-      daoBurnOnlyMint,
-      daoBurnOnly.publicKey,
-    )
-
-    //verify ATA balances somewhere for thoroughness sake???
-
+    daoATokenAccount = await createTokenAccount(provider.connection, daoA, daoAMint, daoA.publicKey);
+    daoBTokenAccount = await createTokenAccount(provider.connection, daoB, daoBMint, daoB.publicKey);
+    daoBurnOnlyTokenAccount = await createTokenAccount(provider.connection, daoBurnOnly, daoBurnOnlyMint, daoBurnOnly.publicKey);
+  
     await mintTo(
       provider.connection,
       daoA,
@@ -123,7 +79,7 @@ describe('fusogen', () => {
       daoATokenAccount,
       daoA.publicKey,
       1000
-    );
+    ); 
 
     await mintTo(
       provider.connection,
@@ -150,6 +106,9 @@ describe('fusogen', () => {
       null,
       10
     )
+
+    const userBalance = await provider.connection.getBalance(user.publicKey);
+    console.log(`User SOL balance: ${userBalance / LAMPORTS_PER_SOL} SOL`);
 
     const daoABalance = await provider.connection.getTokenAccountBalance(daoATokenAccount);
     console.log("DAO A Token Account Balance: ", daoABalance.value.amount);
@@ -205,9 +164,9 @@ describe('fusogen', () => {
         treasury: daoBurnOnlyTokenAccount,
         mintTreasury: daoBurnOnlyMint,
         treasuryAuthority: daoBurnOnly.publicKey,
-      
+
         tokenProgram: TOKEN_PROGRAM_ID,
-        })
+      })
       .signers([daoBurnOnly])
       .rpc();
     console.log('Your transaction signature', tx);
