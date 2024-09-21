@@ -8,6 +8,38 @@
   },
   "instructions": [
     {
+      "name": "burn_dao_treasury",
+      "discriminator": [
+        59,
+        110,
+        98,
+        25,
+        52,
+        41,
+        137,
+        64
+      ],
+      "accounts": [
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "mint_treasury",
+          "writable": true
+        },
+        {
+          "name": "treasury_authority",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "initialize_mint",
       "discriminator": [
         209,

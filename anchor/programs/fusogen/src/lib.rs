@@ -1,5 +1,5 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Mint, MintTo, Token, TokenAccount, Transfer};
+use anchor_spl::token::{self, Burn, Mint, MintTo, Token, TokenAccount, Transfer};
 
 declare_id!("8u5DoSAV7cZxQAPYumVRZCJeYoijkkjCHsGgC6gKyp4m");
 
@@ -17,7 +17,34 @@ pub mod fusogen {
 
         Ok(())
     }
+
+    pub fn burn_dao_treasury(ctx: Context<BurnTreasury>) -> Result<()> {
+        let treasury_balance = ctx.accounts.treasury.amount;
+
+        let cpi_accounts = Burn {
+            mint: ctx.accounts.mint_treasury.to_account_info(),
+            from: ctx.accounts.treasury.to_account_info(),
+            authority: ctx.accounts.treasury_authority.to_account_info(),
+        };
+        let cpi_program = ctx.accounts.token_program.to_account_info();
+        let cpi_ctx = CpiContext::new(cpi_program, cpi_accounts);
+
+        token::burn(cpi_ctx, treasury_balance)?;
+        Ok(())
+    }
 }
+
+#[derive(Accounts)]
+pub struct BurnTreasury<'info> {
+    #[account(mut)]
+    pub treasury: Account<'info, TokenAccount>, // ATA holding tokens to burn
+    #[account(mut)]
+    pub mint_treasury: Account<'info, Mint>, // The mint for the token being burned
+    #[account(signer)] // Signer: Ensure the treasury authority is signing the transaction
+    pub treasury_authority: Signer<'info>, // The authority allowed to burn tokens
+    pub token_program: Program<'info, Token>, 
+}
+
 
 #[derive(Accounts)]
 pub struct InitializeMint<'info> {
@@ -45,6 +72,6 @@ pub struct MintAccount {
     pub treasury_b: Pubkey,
 }
 
-//CONT:: merge function
+//CONT:: cleanup test code, merge function
 //TODO:: perform a merge // parameterize exchange rate // insert burn addresses and affect token tx
 //Upwork logo design - reserve fusogen.io

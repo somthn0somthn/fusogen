@@ -14,6 +14,38 @@ export type Fusogen = {
   },
   "instructions": [
     {
+      "name": "burnDaoTreasury",
+      "discriminator": [
+        59,
+        110,
+        98,
+        25,
+        52,
+        41,
+        137,
+        64
+      ],
+      "accounts": [
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "mintTreasury",
+          "writable": true
+        },
+        {
+          "name": "treasuryAuthority",
+          "signer": true
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "initializeMint",
       "discriminator": [
         209,

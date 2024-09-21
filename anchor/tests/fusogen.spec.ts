@@ -15,6 +15,9 @@ import {
   mintTo
 } from '@solana/spl-token';
 
+jest.setTimeout(30000);
+
+//CONT :: trial the burn code, cleanup this testing code
 
 describe('fusogen', () => {
   const provider = anchor.AnchorProvider.local();
@@ -25,15 +28,18 @@ describe('fusogen', () => {
   const mintAccount = Keypair.generate();
   const daoA = Keypair.generate();
   const daoB = Keypair.generate();
+  const daoBurnOnly = Keypair.generate();
 
   let daoAMint: PublicKey;
   let daoBMint: PublicKey;
+  let daoBurnOnlyMint: PublicKey;
 
   let newTokenMint: PublicKey;
   let daoATokenAccount: PublicKey;
   let daoBTokenAccount: PublicKey;
+  let daoBurnOnlyTokenAccount: PublicKey;
 
-  
+
   beforeAll(async () => {
     await provider.connection.confirmTransaction(
       await provider.connection.requestAirdrop(
@@ -51,6 +57,13 @@ describe('fusogen', () => {
 
     await provider.connection.confirmTransaction(
       await provider.connection.requestAirdrop(
+        daoBurnOnly.publicKey,
+        10 * LAMPORTS_PER_SOL
+      )
+    );
+
+    await provider.connection.confirmTransaction(
+      await provider.connection.requestAirdrop(
         user.publicKey,
         10 * LAMPORTS_PER_SOL
       )
@@ -59,7 +72,7 @@ describe('fusogen', () => {
     daoAMint = await createMint(
       provider.connection,
       daoA,
-      daoA.publicKey,
+      daoA.publicKey, // mint authority
       null,
       10
     )
@@ -67,7 +80,15 @@ describe('fusogen', () => {
     daoBMint = await createMint(
       provider.connection,
       daoB,
-      daoB.publicKey,
+      daoB.publicKey, // mint authority
+      null,
+      10
+    )
+
+    daoBurnOnlyMint = await createMint(
+      provider.connection,
+      daoBurnOnly,
+      daoBurnOnly.publicKey, // mint authority
       null,
       10
     )
@@ -86,6 +107,13 @@ describe('fusogen', () => {
       daoB.publicKey,
     )
 
+    daoBurnOnlyTokenAccount = await createAccount(
+      provider.connection,
+      daoBurnOnly,
+      daoBurnOnlyMint,
+      daoBurnOnly.publicKey,
+    )
+
     //verify ATA balances somewhere for thoroughness sake???
 
     await mintTo(
@@ -93,8 +121,8 @@ describe('fusogen', () => {
       daoA,
       daoAMint,
       daoATokenAccount,
-      daoA.publicKey, 
-      1000 
+      daoA.publicKey,
+      1000
     );
 
     await mintTo(
@@ -102,8 +130,17 @@ describe('fusogen', () => {
       daoB,
       daoBMint,
       daoBTokenAccount,
-      daoB.publicKey, 
-      1000 
+      daoB.publicKey,
+      1000
+    );
+
+    await mintTo(
+      provider.connection,
+      daoBurnOnly,
+      daoBurnOnlyMint,
+      daoBurnOnlyTokenAccount,
+      daoBurnOnly.publicKey,
+      1000
     );
 
     newTokenMint = await createMint(
@@ -113,6 +150,15 @@ describe('fusogen', () => {
       null,
       10
     )
+
+    const daoABalance = await provider.connection.getTokenAccountBalance(daoATokenAccount);
+    console.log("DAO A Token Account Balance: ", daoABalance.value.amount);
+
+    const daoBBalance = await provider.connection.getTokenAccountBalance(daoBTokenAccount);
+    console.log("DAO B Token Account Balance: ", daoBBalance.value.amount);
+
+    const daoBurnOnlyBalance = await provider.connection.getTokenAccountBalance(daoBurnOnlyTokenAccount);
+    console.log("DAO Burn Only Token Account Balance: ", daoBurnOnlyBalance.value.amount);
   })
 
   it('Initializes the new token Mint ', async () => {
@@ -135,19 +181,39 @@ describe('fusogen', () => {
 
     const mintAccountState = await program.account.mintAccount.fetch(mintAccount.publicKey);
     const derivedDaoATokenAccount = await getAssociatedTokenAddress(
-      daoAMint,      
-      daoA.publicKey 
+      daoAMint,
+      daoA.publicKey
     );
     const derivedDaoBTokenAccount = await getAssociatedTokenAddress(
-      daoBMint,      
-      daoB.publicKey 
+      daoBMint,
+      daoB.publicKey
     );
-    
+
     expect(mintAccountState.exchangeRatio.toNumber()).toBe(100);
     expect(mintAccountState.treasuryA.toString()).toBe(derivedDaoATokenAccount.toString());
     expect(mintAccountState.treasuryB.toString()).toBe(derivedDaoBTokenAccount.toString());
 
     console.log("TreasuryA is ", mintAccountState.treasuryA.toString());
     console.log("TreasuryB is ", mintAccountState.treasuryB.toString());
+  });
+
+  it('Burns a DAOs treasury', async () => {
+    // Add your test here.
+    const tx = await program.methods
+      .burnDaoTreasury()
+      .accounts({
+        treasury: daoBurnOnlyTokenAccount,
+        mintTreasury: daoBurnOnlyMint,
+        treasuryAuthority: daoBurnOnly.publicKey,
+      
+        tokenProgram: TOKEN_PROGRAM_ID,
+        })
+      .signers([daoBurnOnly])
+      .rpc();
+    console.log('Your transaction signature', tx);
+
+    const daoBurnOnlyBalanceAfter = await provider.connection.getTokenAccountBalance(daoBurnOnlyTokenAccount);
+    expect(Number(daoBurnOnlyBalanceAfter.value.amount)).toBe(0);
+    console.log("DAO Burn Only Token Account Balance after burn: ", daoBurnOnlyBalanceAfter.value.amount);
   });
 });
