@@ -30,7 +30,7 @@ describe('fusogen', () => {
 
   const program = anchor.workspace.Fusogen as Program<Fusogen>;
   const user = Keypair.generate();
-  const mintAccount = Keypair.generate();
+  const mergeAccount = Keypair.generate();
   const daoA = Keypair.generate();
   const daoB = Keypair.generate();
   const daoBurnOnly = Keypair.generate();
@@ -64,14 +64,14 @@ describe('fusogen', () => {
     await airdropSol(provider.connection, daoBurnOnly.publicKey, 10 * LAMPORTS_PER_SOL);
     await airdropSol(provider.connection, user.publicKey, 10 * LAMPORTS_PER_SOL);
 
-    daoAMint = await createTokenMint(provider.connection, daoA, daoA.publicKey); 
+    daoAMint = await createTokenMint(provider.connection, daoA, daoA.publicKey);
     daoBMint = await createTokenMint(provider.connection, daoB, daoB.publicKey);
     daoBurnOnlyMint = await createTokenMint(provider.connection, daoBurnOnly, daoBurnOnly.publicKey);
 
     daoATokenAccount = await createTokenAccount(provider.connection, daoA, daoAMint, daoA.publicKey);
     daoBTokenAccount = await createTokenAccount(provider.connection, daoB, daoBMint, daoB.publicKey);
     daoBurnOnlyTokenAccount = await createTokenAccount(provider.connection, daoBurnOnly, daoBurnOnlyMint, daoBurnOnly.publicKey);
-  
+
     await mintTo(
       provider.connection,
       daoA,
@@ -79,7 +79,7 @@ describe('fusogen', () => {
       daoATokenAccount,
       daoA.publicKey,
       1000
-    ); 
+    );
 
     await mintTo(
       provider.connection,
@@ -125,7 +125,7 @@ describe('fusogen', () => {
     const tx = await program.methods
       .initializeMint()
       .accounts({
-        mintAccount: mintAccount.publicKey,
+        mergeAccount: mergeAccount.publicKey,
         mint: newTokenMint,
         treasuryA: daoATokenAccount,
         treasuryB: daoBTokenAccount,
@@ -134,11 +134,11 @@ describe('fusogen', () => {
         tokenProgram: TOKEN_PROGRAM_ID,
         systemProgram: SystemProgram.programId,
       })
-      .signers([user, mintAccount])
+      .signers([user, mergeAccount])
       .rpc();
     console.log('Your transaction signature', tx);
 
-    const mintAccountState = await program.account.mintAccount.fetch(mintAccount.publicKey);
+    const mergeAccountState = await program.account.mergeAccount.fetch(mergeAccount.publicKey);
     const derivedDaoATokenAccount = await getAssociatedTokenAddress(
       daoAMint,
       daoA.publicKey
@@ -148,12 +148,12 @@ describe('fusogen', () => {
       daoB.publicKey
     );
 
-    expect(mintAccountState.exchangeRatio.toNumber()).toBe(100);
-    expect(mintAccountState.treasuryA.toString()).toBe(derivedDaoATokenAccount.toString());
-    expect(mintAccountState.treasuryB.toString()).toBe(derivedDaoBTokenAccount.toString());
+    expect(mergeAccountState.exchangeRatio.toNumber()).toBe(100);
+    expect(mergeAccountState.treasuryA.toString()).toBe(derivedDaoATokenAccount.toString());
+    expect(mergeAccountState.treasuryB.toString()).toBe(derivedDaoBTokenAccount.toString());
 
-    console.log("TreasuryA is ", mintAccountState.treasuryA.toString());
-    console.log("TreasuryB is ", mintAccountState.treasuryB.toString());
+    console.log("TreasuryA is ", mergeAccountState.treasuryA.toString());
+    console.log("TreasuryB is ", mergeAccountState.treasuryB.toString());
   });
 
   it('Burns a DAOs treasury', async () => {
@@ -174,5 +174,34 @@ describe('fusogen', () => {
     const daoBurnOnlyBalanceAfter = await provider.connection.getTokenAccountBalance(daoBurnOnlyTokenAccount);
     expect(Number(daoBurnOnlyBalanceAfter.value.amount)).toBe(0);
     console.log("DAO Burn Only Token Account Balance after burn: ", daoBurnOnlyBalanceAfter.value.amount);
+  });
+
+  it('Will merge the treasuries, but right now just burns both', async () => {
+    // Add your test here.
+    const tx = await program.methods
+      .mergeDaoTreasury()
+      .accounts({
+        mergeAccount: mergeAccount.publicKey,
+        mintTreasuryA: daoAMint,
+        treasuryAAta: daoATokenAccount,
+        mintTreasuryB: daoBMint,
+        treasuryBAta: daoBTokenAccount,
+        treasuryAAuthority: daoA.publicKey,
+        treasuryBAuthority: daoB.publicKey,
+
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .signers([daoA, daoB])
+      .rpc();
+    console.log('Your transaction signature', tx);
+
+    const daoABalanceAfter = await provider.connection.getTokenAccountBalance(daoATokenAccount);
+    expect(Number(daoABalanceAfter.value.amount)).toBe(0);
+
+    const daoBBalanceAfter = await provider.connection.getTokenAccountBalance(daoBTokenAccount);
+    expect(Number(daoBBalanceAfter.value.amount)).toBe(0);
+
+    console.log("DAO A Token Account Balance after burn: ", daoABalanceAfter.value.amount);
+    console.log("DAO B Token Account Balance after burn: ", daoBBalanceAfter.value.amount);
   });
 });
