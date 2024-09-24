@@ -1,5 +1,6 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Burn, Mint, MintTo, Token, TokenAccount, Transfer};
+use anchor_spl::associated_token::AssociatedToken;
 
 declare_id!("8u5DoSAV7cZxQAPYumVRZCJeYoijkkjCHsGgC6gKyp4m");
 
@@ -59,6 +60,27 @@ pub mod fusogen {
         let cpi_b_ctx = CpiContext::new(cpi_b_program, cpi_b_accounts);
 
         token::burn(cpi_b_ctx, treasury_b_balance)?;
+
+        //creating new tokens - not creating new ATAs now - not relying on MergeAccount
+
+        let mint_a_accounts = MintTo {
+            mint: ctx.accounts.new_mint.to_account_info(),
+            to: ctx.accounts.new_treasury_a_ata.to_account_info(),
+            authority: ctx.accounts.user.to_account_info(),
+        };
+        let mint_a_ctx = CpiContext::new(ctx.accounts.token_program.to_account_info(), mint_a_accounts);
+        let new_tokens_a = 123;
+        token::mint_to(mint_a_ctx, new_tokens_a)?;
+
+        let mint_b_accounts = MintTo {
+            mint: ctx.accounts.new_mint.to_account_info(),
+            to: ctx.accounts.new_treasury_b_ata.to_account_info(),
+            authority: ctx.accounts.user.to_account_info(),
+        };
+        let mint_b_ctx = CpiContext::new(ctx.accounts.token_program.to_account_info(), mint_b_accounts);
+        let new_tokens_b = 456;
+        token::mint_to(mint_b_ctx, new_tokens_b)?;
+
         Ok(())
     }
 }
@@ -66,7 +88,7 @@ pub mod fusogen {
 #[derive(Accounts)]
 pub struct MergeTreasuries<'info> {
     #[account(mut)]
-    pub merge_account: Account<'info, MergeAccount>,
+    pub new_mint: Account<'info, Mint>,
     #[account(mut)]
     pub mint_treasury_a: Account<'info, Mint>, // The mint for the token being burned
     #[account(mut)]
@@ -75,11 +97,18 @@ pub struct MergeTreasuries<'info> {
     pub mint_treasury_b: Account<'info, Mint>, // The mint for the token being burned
     #[account(mut)]
     pub treasury_b_ata: Account<'info, TokenAccount>,
+    #[account(mut)]
+    pub new_treasury_a_ata: Account<'info, TokenAccount>,
+    #[account(mut)]
+    pub new_treasury_b_ata: Account<'info, TokenAccount>,
+    #[account(signer)]
+    pub user: Signer<'info>,
     #[account(signer)] // Signer: Ensure the treasury authority is signing the transaction
     pub treasury_a_authority: Signer<'info>, // The authority allowed to burn tokens
     #[account(signer)] // Signer: Ensure the treasury authority is signing the transaction
     pub treasury_b_authority: Signer<'info>, // The authority allowed to burn tokens
     pub token_program: Program<'info, Token>, 
+    pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
@@ -120,6 +149,7 @@ pub struct MergeAccount {
     pub treasury_b: Pubkey,
 }
 
-//CONT:: cleanup test code, merge function
-//TODO:: perform a merge // parameterize exchange rate // insert burn addresses and affect token tx
+//CONT::  // FE PoC 
+//TODO::  // parameterize exchange rate // fix the mergeAccount logic
+//        // make PDAs for at least newMint Authority // improve var naming
 //Upwork logo design - reserve fusogen.io

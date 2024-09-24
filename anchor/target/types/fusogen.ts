@@ -109,7 +109,7 @@ export type Fusogen = {
       ],
       "accounts": [
         {
-          "name": "mergeAccount",
+          "name": "newMint",
           "writable": true
         },
         {
@@ -129,6 +129,18 @@ export type Fusogen = {
           "writable": true
         },
         {
+          "name": "newTreasuryAAta",
+          "writable": true
+        },
+        {
+          "name": "newTreasuryBAta",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
           "name": "treasuryAAuthority",
           "signer": true
         },
@@ -139,6 +151,10 @@ export type Fusogen = {
         {
           "name": "tokenProgram",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": []

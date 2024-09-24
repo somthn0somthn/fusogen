@@ -103,7 +103,7 @@
       ],
       "accounts": [
         {
-          "name": "merge_account",
+          "name": "new_mint",
           "writable": true
         },
         {
@@ -123,6 +123,18 @@
           "writable": true
         },
         {
+          "name": "new_treasury_a_ata",
+          "writable": true
+        },
+        {
+          "name": "new_treasury_b_ata",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
           "name": "treasury_a_authority",
           "signer": true
         },
@@ -133,6 +145,10 @@
         {
           "name": "token_program",
           "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
         }
       ],
       "args": []
