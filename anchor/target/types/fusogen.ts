@@ -14,6 +14,38 @@ export type Fusogen = {
   },
   "instructions": [
     {
+      "name": "burnDaoTreasury",
+      "discriminator": [
+        59,
+        110,
+        98,
+        25,
+        52,
+        41,
+        137,
+        64
+      ],
+      "accounts": [
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "mintTreasury",
+          "writable": true
+        },
+        {
+          "name": "treasuryAuthority",
+          "signer": true
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "initializeMint",
       "discriminator": [
         209,
@@ -27,7 +59,7 @@ export type Fusogen = {
       ],
       "accounts": [
         {
-          "name": "mintAccount",
+          "name": "mergeAccount",
           "writable": true,
           "signer": true
         },
@@ -62,26 +94,90 @@ export type Fusogen = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "mergeDaoTreasury",
+      "discriminator": [
+        187,
+        238,
+        241,
+        213,
+        229,
+        182,
+        144,
+        139
+      ],
+      "accounts": [
+        {
+          "name": "newMint",
+          "writable": true
+        },
+        {
+          "name": "mintTreasuryA",
+          "writable": true
+        },
+        {
+          "name": "treasuryAAta",
+          "writable": true
+        },
+        {
+          "name": "mintTreasuryB",
+          "writable": true
+        },
+        {
+          "name": "treasuryBAta",
+          "writable": true
+        },
+        {
+          "name": "newTreasuryAAta",
+          "writable": true
+        },
+        {
+          "name": "newTreasuryBAta",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "treasuryAAuthority",
+          "signer": true
+        },
+        {
+          "name": "treasuryBAuthority",
+          "signer": true
+        },
+        {
+          "name": "tokenProgram",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
     {
-      "name": "mintAccount",
+      "name": "mergeAccount",
       "discriminator": [
-        74,
-        195,
-        197,
-        21,
-        59,
-        188,
-        119,
-        96
+        53,
+        217,
+        71,
+        70,
+        115,
+        27,
+        7,
+        64
       ]
     }
   ],
   "types": [
     {
-      "name": "mintAccount",
+      "name": "mergeAccount",
       "type": {
         "kind": "struct",
         "fields": [

@@ -8,6 +8,38 @@
   },
   "instructions": [
     {
+      "name": "burn_dao_treasury",
+      "discriminator": [
+        59,
+        110,
+        98,
+        25,
+        52,
+        41,
+        137,
+        64
+      ],
+      "accounts": [
+        {
+          "name": "treasury",
+          "writable": true
+        },
+        {
+          "name": "mint_treasury",
+          "writable": true
+        },
+        {
+          "name": "treasury_authority",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "initialize_mint",
       "discriminator": [
         209,
@@ -21,7 +53,7 @@
       ],
       "accounts": [
         {
-          "name": "mint_account",
+          "name": "merge_account",
           "writable": true,
           "signer": true
         },
@@ -56,26 +88,90 @@
         }
       ],
       "args": []
+    },
+    {
+      "name": "merge_dao_treasury",
+      "discriminator": [
+        187,
+        238,
+        241,
+        213,
+        229,
+        182,
+        144,
+        139
+      ],
+      "accounts": [
+        {
+          "name": "new_mint",
+          "writable": true
+        },
+        {
+          "name": "mint_treasury_a",
+          "writable": true
+        },
+        {
+          "name": "treasury_a_ata",
+          "writable": true
+        },
+        {
+          "name": "mint_treasury_b",
+          "writable": true
+        },
+        {
+          "name": "treasury_b_ata",
+          "writable": true
+        },
+        {
+          "name": "new_treasury_a_ata",
+          "writable": true
+        },
+        {
+          "name": "new_treasury_b_ata",
+          "writable": true
+        },
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "treasury_a_authority",
+          "signer": true
+        },
+        {
+          "name": "treasury_b_authority",
+          "signer": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
     }
   ],
   "accounts": [
     {
-      "name": "MintAccount",
+      "name": "MergeAccount",
       "discriminator": [
-        74,
-        195,
-        197,
-        21,
-        59,
-        188,
-        119,
-        96
+        53,
+        217,
+        71,
+        70,
+        115,
+        27,
+        7,
+        64
       ]
     }
   ],
   "types": [
     {
-      "name": "MintAccount",
+      "name": "MergeAccount",
       "type": {
         "kind": "struct",
         "fields": [
