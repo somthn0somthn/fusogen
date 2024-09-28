@@ -3,7 +3,7 @@
 import { getFusogenProgram, getFusogenProgramId } from '@fusogen/anchor';
 import { Program } from '@coral-xyz/anchor';
 import { useConnection } from '@solana/wallet-adapter-react';
-import { Cluster, Keypair } from '@solana/web3.js';
+import { Cluster, Keypair, PublicKey } from '@solana/web3.js';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import toast from 'react-hot-toast';
@@ -29,7 +29,13 @@ export function useFusogenProgram() {
 
   const greet = useMutation({
     mutationKey: ['fusogen', 'greet', { cluster }],
-    mutationFn: (keypair: Keypair) => program.methods.greet().rpc(),
+    mutationFn: async ({ mint, ata}: {mint: PublicKey, ata: PublicKey}) => program.methods
+      .greet()
+      .accounts({
+        mint,
+        ata
+      })
+      .rpc(),
     onSuccess: (signature) => {
       transactionToast(signature);
     },

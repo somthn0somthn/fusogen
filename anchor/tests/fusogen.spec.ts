@@ -112,6 +112,10 @@ describe('fusogen', () => {
     const userBalance = await provider.connection.getBalance(user.publicKey);
     console.log(`User SOL balance: ${userBalance / LAMPORTS_PER_SOL} SOL`);
 
+    console.log(`DAO A MINT IS `, daoAMint)
+
+    console.log(`DAO A MINT ATA`, daoATokenAccount)
+
     const daoABalance = await provider.connection.getTokenAccountBalance(daoATokenAccount);
     console.log("DAO A Token Account Balance: ", daoABalance.value.amount);
 
@@ -162,6 +166,19 @@ describe('fusogen', () => {
 
     console.log("TreasuryA is ", mergeAccountState.treasuryA.toString());
     console.log("TreasuryB is ", mergeAccountState.treasuryB.toString());
+  });
+
+  it('Greets', async () => {
+    // Add your test here.
+    const tx = await program.methods
+      .greet()
+      .accounts({
+        mint: daoAMint,
+        ata: daoATokenAccount,
+      })
+      .rpc();
+    console.log('Your transaction signature', tx);
+
   });
 
   it('Burns a DAOs treasury', async () => {

@@ -2,13 +2,30 @@ use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Burn, Mint, MintTo, Token, TokenAccount, Transfer};
 use anchor_spl::associated_token::AssociatedToken;
 
+//CONT - push this testing branch remotely because it contains a working 
+//figure out better scripting and then implement the PoC template and test
+
 declare_id!("8u5DoSAV7cZxQAPYumVRZCJeYoijkkjCHsGgC6gKyp4m");
 
 #[program]
 pub mod fusogen {
-    use super::*;
+    use super::*;   
+
+    pub fn greet(ctx: Context<Greet>) -> Result<()> {
+        // For frontend testing purposes
+        msg!("Greetings from: {:?}", ctx.program_id);
+        
+        let mint_address = ctx.accounts.mint.key();
+        msg!("Mint address is {}", mint_address);
+    
+        let ata_balance = ctx.accounts.ata.amount;
+        msg!("ATA balance is {}", ata_balance);
+    
+        Ok(())
+    }
 
     pub fn initialize_mint(ctx: Context<InitializeMint>) -> Result<()> {
+        msg!("YOU ARE INITIALIZING A MINT");
         let merge_account = &mut ctx.accounts.merge_account;
         let exchange_ratio: u64 = 100;
         merge_account.exchange_ratio = exchange_ratio;
@@ -147,6 +164,16 @@ pub struct MergeAccount {
     pub mint: Pubkey,
     pub treasury_a: Pubkey,
     pub treasury_b: Pubkey,
+}
+
+//remove this
+#[derive(Accounts)]
+pub struct Greet<'info> {
+    pub mint: Account<'info, Mint>,
+    #[account(
+        constraint = ata.mint == mint.key()
+    )]
+    pub ata: Account<'info, TokenAccount>,
 }
 
 //CONT::  // FE PoC 

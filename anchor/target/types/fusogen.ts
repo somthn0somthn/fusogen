@@ -46,6 +46,28 @@ export type Fusogen = {
       "args": []
     },
     {
+      "name": "greet",
+      "discriminator": [
+        203,
+        194,
+        3,
+        150,
+        228,
+        58,
+        181,
+        62
+      ],
+      "accounts": [
+        {
+          "name": "mint"
+        },
+        {
+          "name": "ata"
+        }
+      ],
+      "args": []
+    },
+    {
       "name": "initializeMint",
       "discriminator": [
         209,
