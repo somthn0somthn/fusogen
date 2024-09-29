@@ -14,6 +14,8 @@ pub mod fusogen {
     pub fn greet(ctx: Context<Greet>) -> Result<()> {
         // For frontend testing purposes
         msg!("Greetings from: {:?}", ctx.program_id);
+        msg!("THIS is wallet1 {:?}", ctx.accounts.user1.key());
+        msg!("THIS is wallet2 {:?}", ctx.accounts.user2.key());
         
         let mint_address = ctx.accounts.mint.key();
         msg!("Mint address is {}", mint_address);
@@ -174,6 +176,10 @@ pub struct Greet<'info> {
         constraint = ata.mint == mint.key()
     )]
     pub ata: Account<'info, TokenAccount>,
+    #[account(signer)]
+    pub user1: Signer<'info>,
+    #[account(signer)]
+    pub user2: Signer<'info>,
 }
 
 //CONT::  // FE PoC 

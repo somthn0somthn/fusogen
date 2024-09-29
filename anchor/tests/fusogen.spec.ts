@@ -175,8 +175,12 @@ describe('fusogen', () => {
       .accounts({
         mint: daoAMint,
         ata: daoATokenAccount,
+        user1: daoA.publicKey,
+        user2: daoB.publicKey,
       })
+      .signers([daoA, daoB])
       .rpc();
+      
     console.log('Your transaction signature', tx);
 
   });

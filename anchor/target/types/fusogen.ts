@@ -63,6 +63,14 @@ export type Fusogen = {
         },
         {
           "name": "ata"
+        },
+        {
+          "name": "user1",
+          "signer": true
+        },
+        {
+          "name": "user2",
+          "signer": true
         }
       ],
       "args": []

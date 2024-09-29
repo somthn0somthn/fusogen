@@ -29,17 +29,21 @@ export function useFusogenProgram() {
 
   const greet = useMutation({
     mutationKey: ['fusogen', 'greet', { cluster }],
-    mutationFn: async ({ mint, ata}: {mint: PublicKey, ata: PublicKey}) => program.methods
-      .greet()
-      .accounts({
-        mint,
-        ata
-      })
-      .rpc(),
+    mutationFn: async ({ mint, ata, user1, user2 }: { mint: PublicKey, ata: PublicKey, user1: Keypair, user2: Keypair }) => 
+      program.methods
+        .greet()
+        .accounts({
+          mint,
+          ata,
+          user1: user1.publicKey,  // Signer 1
+          user2: user2.publicKey,  // Signer 2
+        })
+        .signers([user1, user2]) // Adding signers here
+        .rpc(),
     onSuccess: (signature) => {
       transactionToast(signature);
     },
-    onError: () => toast.error('Failed to run program'),
+    onError: () => toast.error('Failed to run the program'),
   });
 
   return {
