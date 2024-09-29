@@ -46,10 +46,55 @@ export function useFusogenProgram() {
     onError: () => toast.error('Failed to run the program'),
   });
 
+  const mergeDaoTreasuries = useMutation({
+    mutationKey: ['fusogen', 'mergeDaoTreasuries', { cluster }],
+    mutationFn: async ({
+      mintTreasuryA,
+      treasuryAAta,
+      mintTreasuryB,
+      treasuryBAta,
+      newMint,
+      newTreasuryAAta,
+      newTreasuryBAta,
+      treasuryAAuthority,
+      treasuryBAuthority,
+    }: {
+      mintTreasuryA: PublicKey;
+      treasuryAAta: PublicKey;
+      mintTreasuryB: PublicKey;
+      treasuryBAta: PublicKey;
+      newMint: PublicKey;
+      newTreasuryAAta: PublicKey;
+      newTreasuryBAta: PublicKey;
+      treasuryAAuthority: Keypair;
+      treasuryBAuthority: Keypair;
+    }) =>
+      program.methods
+        .mergeDaoTreasuries()
+        .accounts({
+          mintTreasuryA, // Old Treasury A Mint
+          treasuryAAta,  // Old Treasury A ATA
+          mintTreasuryB, // Old Treasury B Mint
+          treasuryBAta,  // Old Treasury B ATA
+          newMint,       // New Mint
+          newTreasuryAAta, // New Treasury A ATA
+          newTreasuryBAta, // New Treasury B ATA
+          treasuryAAuthority: treasuryAAuthority.publicKey, // Signer for Treasury A Authority
+          treasuryBAuthority: treasuryBAuthority.publicKey, // Signer for Treasury B Authority
+        })
+        .signers([treasuryAAuthority, treasuryBAuthority]) // Adding signers
+        .rpc(),
+    onSuccess: (signature) => {
+      transactionToast(signature);
+    },
+    onError: () => toast.error('Failed to merge DAO treasuries'),
+  });
+
   return {
     program,
     programId,
     getProgramAccount,
     greet,
+    mergeDaoTreasuries
   };
 }

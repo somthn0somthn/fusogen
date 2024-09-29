@@ -14,24 +14,44 @@ export function FusogenCreate() {
   const { program } = useFusogenProgram(); // Get program from hook
   const { connection } = useConnection(); // Get connection
 
-  const [mintAddress, setMintAddress] = useState('');
-  const [ataAddress, setAtaAddress] = useState('');
+  // State for collecting input for treasury merging
+  const [mintTreasuryA, setMintTreasuryA] = useState('');
+  const [treasuryAAta, setTreasuryAAta] = useState('');
+  const [mintTreasuryB, setMintTreasuryB] = useState('');
+  const [treasuryBAta, setTreasuryBAta] = useState('');
+  const [newMint, setNewMint] = useState('');
+  const [newTreasuryAAta, setNewTreasuryAAta] = useState('');
+  const [newTreasuryBAta, setNewTreasuryBAta] = useState('');
   const [secondWalletAddress, setSecondWalletAddress] = useState(''); // state for second wallet public key
 
   // Handler for signing the transaction with the first wallet
   const handleFirstSigner = async () => {
     try {
-      const mint = new PublicKey(mintAddress);
-      const ata = new PublicKey(ataAddress);
+      const mintTreasuryAPubkey = new PublicKey(mintTreasuryA);
+      const treasuryAAtaPubkey = new PublicKey(treasuryAAta);
+      const mintTreasuryBPubkey = new PublicKey(mintTreasuryB);
+      const treasuryBAtaPubkey = new PublicKey(treasuryBAta);
+      const newMintPubkey = new PublicKey(newMint);
+      const newTreasuryAAtaPubkey = new PublicKey(newTreasuryAAta);
+      const newTreasuryBAtaPubkey = new PublicKey(newTreasuryBAta);
 
-      // Step 1: Create the transaction
-      const transaction = await createTransaction(mint, ata, provider.wallet.publicKey, new PublicKey(secondWalletAddress), program, connection);
+      // Step 1: Create the transaction for merging DAOs
+      const transaction = await createTransaction(
+        mintTreasuryAPubkey,
+        treasuryAAtaPubkey,
+        mintTreasuryBPubkey,
+        treasuryBAtaPubkey,
+        newMintPubkey,
+        newTreasuryAAtaPubkey,
+        newTreasuryBAtaPubkey,
+        provider.wallet.publicKey, // First authority
+        new PublicKey(secondWalletAddress), // Second authority
+        program,
+        connection
+      );
 
       // Step 2: Sign the transaction with the first wallet (wallet.publicKey)
       await signTransaction(transaction, wallet);
-
-      /* // Step 3: Store the partially signed transaction in localStorage
-      localStorage.setItem('fusogen-partial-transaction', signedTransaction.serialize().toString('base64')); */
 
       console.log("First signature added, transaction stored locally.");
 
@@ -62,27 +82,71 @@ export function FusogenCreate() {
     }
   };
 
-  return (
+ return (
     <div className="space-y-4">
       <div>
         <input
           type="text"
           className="input input-bordered w-full"
-          placeholder="Enter Mint Address"
-          value={mintAddress}
-          onChange={(e) => setMintAddress(e.target.value)}
+          placeholder="Mint Treasury A"
+          value={mintTreasuryA}
+          onChange={(e) => setMintTreasuryA(e.target.value)}
         />
       </div>
       <div>
         <input
           type="text"
           className="input input-bordered w-full"
-          placeholder="Enter ATA Address"
-          value={ataAddress}
-          onChange={(e) => setAtaAddress(e.target.value)}
+          placeholder="Treasury A ATA"
+          value={treasuryAAta}
+          onChange={(e) => setTreasuryAAta(e.target.value)}
         />
       </div>
-
+      <div>
+        <input
+          type="text"
+          className="input input-bordered w-full"
+          placeholder="Mint Treasury B"
+          value={mintTreasuryB}
+          onChange={(e) => setMintTreasuryB(e.target.value)}
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          className="input input-bordered w-full"
+          placeholder="Treasury B ATA"
+          value={treasuryBAta}
+          onChange={(e) => setTreasuryBAta(e.target.value)}
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          className="input input-bordered w-full"
+          placeholder="New Mint"
+          value={newMint}
+          onChange={(e) => setNewMint(e.target.value)}
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          className="input input-bordered w-full"
+          placeholder="New Treasury A ATA"
+          value={newTreasuryAAta}
+          onChange={(e) => setNewTreasuryAAta(e.target.value)}
+        />
+      </div>
+      <div>
+        <input
+          type="text"
+          className="input input-bordered w-full"
+          placeholder="New Treasury B ATA"
+          value={newTreasuryBAta}
+          onChange={(e) => setNewTreasuryBAta(e.target.value)}
+        />
+      </div>
       <div>
         <input
           type="text"
