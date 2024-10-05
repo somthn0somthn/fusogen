@@ -8,10 +8,10 @@ dotenv.config({ path: '../.env' });
   const connection = new Connection('http://127.0.0.1:8899', 'confirmed');
 
   // Step 2: Provide the relevant token account public keys here
-  const oldTreasuryATokenAccountStr = 'AmCHn8EFEuP9PwqWt1tHT6VqND9JJExoLNBeufeAX1c2';
-  const oldTreasuryBTokenAccountStr = 'DXUTmaoWSK29xWpCCUNUPrdjeNBdfM8tDzWv1nHF7REg';
-  const newTreasuryATokenAccountStr = '852jiwP8o5ecmxoXqW8iusyYF9nTEJ3WJGWTqj6pkDiU';
-  const newTreasuryBTokenAccountStr = '9D6LGCwcwBoBkyiMXJ1KqEQ8opsBbb7G8c1AUbHx58Rq';
+  const oldTreasuryATokenAccountStr = 'CwZntaM6SToAPr1Xa9khhgZDNuAsAKy21w9nUjzvWXfX';
+  const oldTreasuryBTokenAccountStr = 'JUH7a7JE4NZUZrzKqsGFPDKbvo5LHNgGqwFoukE1r3o';
+  const newTreasuryATokenAccountStr = 'HhXsHfRjFTZrbgH7x82iighQdnkXYuRjRM1GYRbW51LA';
+  const newTreasuryBTokenAccountStr = 'B7M5FguHV8G3qdSp9MmFYqXa1iyhdkzatDUwatVQS92D';
 
   // Convert string to PublicKey
   const oldTreasuryATokenAccount = new PublicKey(oldTreasuryATokenAccountStr);

@@ -34,6 +34,7 @@ export function FusogenCreate() {
       const newMintPubkey = new PublicKey(newMint);
       const newTreasuryAAtaPubkey = new PublicKey(newTreasuryAAta);
       const newTreasuryBAtaPubkey = new PublicKey(newTreasuryBAta);
+      const secondMintAuthority = new PublicKey(secondWalletAddress);
 
       // Step 1: Create the transaction for merging DAOs
       const transaction = await createTransaction(
@@ -45,7 +46,7 @@ export function FusogenCreate() {
         newTreasuryAAtaPubkey,
         newTreasuryBAtaPubkey,
         provider.wallet.publicKey, // First authority
-        new PublicKey(secondWalletAddress), // Second authority
+        secondMintAuthority, // Second authority, e.g. the second wallet
         program,
         connection
       );
