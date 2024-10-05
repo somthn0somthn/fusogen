@@ -31,20 +31,18 @@ export function UiLayout({
         <div className="navbar bg-[#5ac3b8] text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
           <div className="flex-1">
             <Link className="btn btn-ghost normal-case text-xl" href="/">
-              <img className="h-4 md:h-6" alt="Logo" src="/logo.png" />
+              <img className="h-4 md:h-6" alt="Logo" src="/logo-symbol.svg" />
             </Link>
-            <ul className="menu menu-horizontal px-1 space-x-2">
-              {links.map(({ label, path }) => (
-                <li key={path}>
-                  <Link
-                    className={pathname.startsWith(path) ? 'active' : ''}
-                    href={path}
-                  >
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+           
+            {/* Simple Button for External Link */}
+            <a
+              href="https://github.com/somthn0somthn/fusogen"
+              className="btn btn-primary ml-4 bg-[#0b1a1c] text-white border-none hover:bg-[#1a2b2d] hover:text-white"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Docs
+            </a>
           </div>
           <div className="flex-none space-x-2">
             <WalletButton />
@@ -61,20 +59,20 @@ export function UiLayout({
       )}
 
       {/* This is the issue */}
-      
-        <div className="flex-grow bg-[#0b1a1c] mx-4 lg:mx-auto">
-          <Suspense
-            fallback={
-              <div className="text-center my-32">
-                <span className="loading loading-spinner loading-lg"></span>
-              </div>
-            }
-          >
-            {children}
-          </Suspense>
-          <Toaster position="bottom-right" />
-        </div>
-      
+
+      <div className="flex-grow bg-[#0b1a1c] mx-4 lg:mx-auto">
+        <Suspense
+          fallback={
+            <div className="text-center my-32">
+              <span className="loading loading-spinner loading-lg"></span>
+            </div>
+          }
+        >
+          {children}
+        </Suspense>
+        <Toaster position="bottom-right" />
+      </div>
+
 
       {/* Conditionally render footer if not on the landing page */}
       {pathname !== '/' && (
