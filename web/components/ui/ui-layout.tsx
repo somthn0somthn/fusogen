@@ -37,7 +37,7 @@ export function UiLayout({
             {/* Simple Button for External Link */}
             <a
               href="https://github.com/somthn0somthn/fusogen"
-              className="btn btn-primary ml-4 bg-[#0b1a1c] text-white border-none hover:bg-[#1a2b2d] hover:text-white"
+              className="btn btn-primary ml-4 bg-[#0b1a1c] text-white border-none "
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -60,7 +60,7 @@ export function UiLayout({
 
       {/* This is the issue */}
 
-      <div className="flex-grow bg-[#0b1a1c] mx-4 lg:mx-auto">
+      <div className="flex-grow bg-[#0b1a1c] justify-center">
         <Suspense
           fallback={
             <div className="text-center my-32">

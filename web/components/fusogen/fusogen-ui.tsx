@@ -83,7 +83,7 @@ export function FusogenCreate() {
     }
   };
 
- return (
+  return (
     <div className="space-y-4">
       <div>
         <input
@@ -158,23 +158,27 @@ export function FusogenCreate() {
         />
       </div>
 
-      {/* First signer button */}
-      <button
-        className="btn btn-xs lg:btn-md btn-primary"
-        onClick={handleFirstSigner}
-        disabled={wallet.connecting || wallet.disconnecting}
-      >
-        Sign with First Wallet
-      </button>
+      <div className="flex flex-col lg:flex-row lg:space-x-4 space-y-4 lg:space-y-0">
+        {/* First signer button */}
+        <button
+          className="w-full lg:w-1/2 bg-[#5ac3b8] text-white hover:bg-[#4aa49a] transition-colors duration-300 rounded-lg py-4"
+          onClick={handleFirstSigner}
+          disabled={wallet.connecting || wallet.disconnecting}
+        >
+          Sign with First Wallet
+        </button>
 
-      {/* Second signer button */}
-      <button
-        className="btn btn-xs lg:btn-md btn-secondary"
-        onClick={handleSecondSigner}
-        disabled={wallet.connecting || wallet.disconnecting}
-      >
-        Sign with Second Wallet
-      </button>
+        {/* Second signer button */}
+        <button
+          className="w-full lg:w-1/2 bg-[#f07f5a] text-white hover:bg-[#e96b49] transition-colors duration-300 rounded-md py-4"
+          onClick={handleSecondSigner}
+          disabled={wallet.connecting || wallet.disconnecting}
+        >
+          Sign with Second Wallet
+        </button>
+      </div>
+
+
     </div>
   );
 }

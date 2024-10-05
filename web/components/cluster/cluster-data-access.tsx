@@ -14,10 +14,7 @@ export interface Cluster {
 }
 
 export enum ClusterNetwork {
-  Mainnet = 'mainnet-beta',
-  Testnet = 'testnet',
   Devnet = 'devnet',
-  Custom = 'custom',
 }
 
 // By default, we don't configure the mainnet-beta cluster
@@ -30,11 +27,6 @@ export const defaultClusters: Cluster[] = [
     network: ClusterNetwork.Devnet,
   },
   { name: 'local', endpoint: 'http://localhost:8899' },
-  {
-    name: 'testnet',
-    endpoint: clusterApiUrl('testnet'),
-    network: ClusterNetwork.Testnet,
-  },
 ];
 
 const clusterAtom = atomWithStorage<Cluster>(
