@@ -4,36 +4,55 @@ import { useConnection, WalletContextState } from '@solana/wallet-adapter-react'
 
 export function useFusogenTransactions() {
 
-    async function createTransaction(mint: PublicKey, ata: PublicKey, user1: PublicKey, user2: PublicKey, program: any, connection: any) {
+    async function createTransaction(
+        mintTreasuryA: PublicKey,
+        treasuryAAta: PublicKey,
+        mintTreasuryB: PublicKey,
+        treasuryBAta: PublicKey,
+        newMint: PublicKey,
+        newTreasuryAAta: PublicKey,
+        newTreasuryBAta: PublicKey,
+        treasuryAAuthority: PublicKey,
+        treasuryBAuthority: PublicKey,
+        program: any,
+        connection: any
+      ) {
         const transaction = new Transaction();
-
+      
         const { blockhash } = await connection.getLatestBlockhash();
-        console.log("BLOCKHASh IS ", blockhash);
-        
+        console.log("BLOCKHASH IS ", blockhash);
+      
         transaction.recentBlockhash = blockhash;
-        transaction.feePayer = user2;
-
+        transaction.feePayer = treasuryAAuthority; // Update this to match your logic
+      
         transaction.add(
-            await program.methods.greet()
+          await program.methods
+            .mergeDaoTreasuries()
             .accounts({
-                mint, 
-                ata, 
-                user1,
-                user2,
+              mintTreasuryA, // Old Treasury A Mint
+              treasuryAAta,  // Old Treasury A ATA
+              mintTreasuryB, // Old Treasury B Mint
+              treasuryBAta,  // Old Treasury B ATA
+              newMint,       // New Mint
+              newTreasuryAAta, // New Treasury A ATA
+              newTreasuryBAta, // New Treasury B ATA
+              treasuryAAuthority, // Signer for Treasury A Authority
+              treasuryBAuthority, // Signer for Treasury B Authority
             })
             .instruction()
         );
-        console.log("Transaction signatures after signing from create Transaction:", transaction.signatures);
-
+      
+        console.log("Transaction signatures after signing from createTransaction:", transaction.signatures);
+      
         const serializedTransaction = transaction.serialize({
-            requireAllSignatures: false,
+          requireAllSignatures: false,
         });
-        
-
-        console.log("TRANSACTION SERIALIZED AND STORED LOCALLY")
-
+      
+        localStorage.setItem('fusogen-transaction', serializedTransaction.toString('base64'));
+        console.log("TRANSACTION SERIALIZED AND STORED LOCALLY");
+      
         return transaction;
-    }
+      }
 
     async function loadTransaction() {
         const serializedTx = localStorage.getItem('fusogen-transaction');

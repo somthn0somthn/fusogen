@@ -8,38 +8,6 @@
   },
   "instructions": [
     {
-      "name": "burn_dao_treasury",
-      "discriminator": [
-        59,
-        110,
-        98,
-        25,
-        52,
-        41,
-        137,
-        64
-      ],
-      "accounts": [
-        {
-          "name": "treasury",
-          "writable": true
-        },
-        {
-          "name": "mint_treasury",
-          "writable": true
-        },
-        {
-          "name": "treasury_authority",
-          "signer": true
-        },
-        {
-          "name": "token_program",
-          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-        }
-      ],
-      "args": []
-    },
-    {
       "name": "greet",
       "discriminator": [
         203,
@@ -70,72 +38,18 @@
       "args": []
     },
     {
-      "name": "initialize_mint",
+      "name": "merge_dao_treasuries",
       "discriminator": [
-        209,
-        42,
-        195,
-        4,
-        129,
-        85,
-        209,
-        44
+        19,
+        135,
+        208,
+        28,
+        164,
+        212,
+        207,
+        98
       ],
       "accounts": [
-        {
-          "name": "merge_account",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "mint",
-          "writable": true
-        },
-        {
-          "name": "treasury_a",
-          "writable": true
-        },
-        {
-          "name": "treasury_b",
-          "writable": true
-        },
-        {
-          "name": "user",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "system_program",
-          "address": "11111111111111111111111111111111"
-        },
-        {
-          "name": "rent",
-          "address": "SysvarRent111111111111111111111111111111111"
-        },
-        {
-          "name": "token_program",
-          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "merge_dao_treasury",
-      "discriminator": [
-        187,
-        238,
-        241,
-        213,
-        229,
-        182,
-        144,
-        139
-      ],
-      "accounts": [
-        {
-          "name": "new_mint",
-          "writable": true
-        },
         {
           "name": "mint_treasury_a",
           "writable": true
@@ -153,16 +67,16 @@
           "writable": true
         },
         {
+          "name": "new_mint",
+          "writable": true
+        },
+        {
           "name": "new_treasury_a_ata",
           "writable": true
         },
         {
           "name": "new_treasury_b_ata",
           "writable": true
-        },
-        {
-          "name": "user",
-          "signer": true
         },
         {
           "name": "treasury_a_authority",
@@ -182,47 +96,6 @@
         }
       ],
       "args": []
-    }
-  ],
-  "accounts": [
-    {
-      "name": "MergeAccount",
-      "discriminator": [
-        53,
-        217,
-        71,
-        70,
-        115,
-        27,
-        7,
-        64
-      ]
-    }
-  ],
-  "types": [
-    {
-      "name": "MergeAccount",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "exchange_ratio",
-            "type": "u64"
-          },
-          {
-            "name": "mint",
-            "type": "pubkey"
-          },
-          {
-            "name": "treasury_a",
-            "type": "pubkey"
-          },
-          {
-            "name": "treasury_b",
-            "type": "pubkey"
-          }
-        ]
-      }
     }
   ]
 }
