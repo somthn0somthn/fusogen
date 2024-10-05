@@ -25,10 +25,10 @@ export function UiLayout({
   const pathname = usePathname();
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex bg-[#0b1a1c] flex-col">
       {/* Conditionally render navbar if not on the landing page */}
       {pathname !== '/' && (
-        <div className="navbar bg-base-300 text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
+        <div className="navbar bg-[#5ac3b8] text-neutral-content flex-col md:flex-row space-y-2 md:space-y-0">
           <div className="flex-1">
             <Link className="btn btn-ghost normal-case text-xl" href="/">
               <img className="h-4 md:h-6" alt="Logo" src="/logo.png" />
@@ -60,22 +60,25 @@ export function UiLayout({
         </ClusterChecker>
       )}
 
-      <div className="flex-grow mx-4 lg:mx-auto">
-        <Suspense
-          fallback={
-            <div className="text-center my-32">
-              <span className="loading loading-spinner loading-lg"></span>
-            </div>
-          }
-        >
-          {children}
-        </Suspense>
-        <Toaster position="bottom-right" />
-      </div>
+      {/* This is the issue */}
+      
+        <div className="flex-grow bg-[#0b1a1c] mx-4 lg:mx-auto">
+          <Suspense
+            fallback={
+              <div className="text-center my-32">
+                <span className="loading loading-spinner loading-lg"></span>
+              </div>
+            }
+          >
+            {children}
+          </Suspense>
+          <Toaster position="bottom-right" />
+        </div>
+      
 
       {/* Conditionally render footer if not on the landing page */}
       {pathname !== '/' && (
-        <footer className="footer footer-center p-4 bg-base-300 text-base-content">
+        <footer className="footer footer-center p-4 bg-[#0b1a1c] text-base-content">
           <aside>
             <p>
               Video: {' '}
