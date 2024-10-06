@@ -64,7 +64,10 @@ export function ClusterUiSelect() {
   const { clusters, setCluster, cluster } = useCluster();
   return (
     <div className="dropdown dropdown-end">
-      <label tabIndex={0} className="btn btn-primary rounded-btn">
+      <label
+        tabIndex={0}
+        className="btn bg-[#0b1a1c] text-white border-none hover:bg-[#1a2b2d] rounded-btn"
+      >
         {cluster.name}
       </label>
       <ul
@@ -75,7 +78,7 @@ export function ClusterUiSelect() {
           <li key={item.name}>
             <button
               className={`btn btn-sm ${
-                item.active ? 'btn-primary' : 'btn-ghost'
+                item.active ? 'bg-[#0b1a1c] text-white' : 'btn-ghost'
               }`}
               onClick={() => setCluster(item)}
             >
@@ -141,8 +144,6 @@ export function ClusterUiModal({
       >
         <option value={undefined}>Select a network</option>
         <option value={ClusterNetwork.Devnet}>Devnet</option>
-        <option value={ClusterNetwork.Testnet}>Testnet</option>
-        <option value={ClusterNetwork.Mainnet}>Mainnet</option>
       </select>
     </AppModal>
   );

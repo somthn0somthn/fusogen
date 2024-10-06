@@ -7,13 +7,20 @@ body {
   height: 100%;
 }
 
-.wallet-adapter-button-trigger {
-  background: rgb(100, 26, 230) !important;
-  border-radius: 8px !important;
+/* Customize the wallet button styles */
+.wallet-adapter-button-trigger,
+.wallet-adapter-button {
+  background-color: #0b1a1c !important; /* Dark background color */
+  color: white !important; /* White text */
+  border-radius: 8px !important; /* Rounded corners */
+  border: none !important; /* Remove border */
   padding-left: 16px !important;
   padding-right: 16px !important;
 }
-.wallet-adapter-dropdown-list,
-.wallet-adapter-button {
-  font-family: inherit !important;
+
+/* Customize hover behavior */
+.wallet-adapter-button-trigger:hover,
+.wallet-adapter-button:hover {
+  background-color: #1a2b2d !important; /* Darker background on hover */
+  color: white !important; /* Ensure text remains white */
 }

@@ -27,7 +27,6 @@ describe('fusogen', () => {
 
   const program = anchor.workspace.Fusogen as Program<Fusogen>;
   const user = Keypair.generate();
-  const mergeAccount = Keypair.generate();
   const daoA = Keypair.generate();
   const daoB = Keypair.generate();
   const daoBurnOnly = Keypair.generate();
@@ -68,8 +67,8 @@ describe('fusogen', () => {
     daoBurnOnlyMint = await createTokenMint(provider.connection, daoBurnOnly, daoBurnOnly.publicKey);
     newTokenMint = await createMint(
       provider.connection,
-      user,
-      user.publicKey,
+      daoA,
+      daoA.publicKey,
       null,
       10
     )
@@ -99,18 +98,12 @@ describe('fusogen', () => {
       1000
     );
 
-    await mintTo(
-      provider.connection,
-      daoBurnOnly,
-      daoBurnOnlyMint,
-      daoBurnOnlyTokenAccount,
-      daoBurnOnly.publicKey,
-      1000
-    );
-
-
     const userBalance = await provider.connection.getBalance(user.publicKey);
     console.log(`User SOL balance: ${userBalance / LAMPORTS_PER_SOL} SOL`);
+
+    console.log(`DAO A MINT IS `, daoAMint)
+
+    console.log(`DAO A MINT ATA`, daoATokenAccount)
 
     const daoABalance = await provider.connection.getTokenAccountBalance(daoATokenAccount);
     console.log("DAO A Token Account Balance: ", daoABalance.value.amount);
@@ -128,66 +121,27 @@ describe('fusogen', () => {
     console.log("DAO B **NEW** Token Account Balance: ", daoBNewTokenBalance.value.amount);
   })
 
-  it('Initializes the new token Mint ', async () => {
+  it('Greets', async () => {
     // Add your test here.
     const tx = await program.methods
-      .initializeMint()
+      .greet()
       .accounts({
-        mergeAccount: mergeAccount.publicKey,
-        mint: newTokenMint,
-        treasuryA: daoATokenAccount,
-        treasuryB: daoBTokenAccount,
-
-        user: user.publicKey,
-        tokenProgram: TOKEN_PROGRAM_ID,
-        systemProgram: SystemProgram.programId,
+        mint: daoAMint,
+        ata: daoATokenAccount,
+        user1: daoA.publicKey,
+        user2: daoB.publicKey,
       })
-      .signers([user, mergeAccount])
+      .signers([daoA, daoB])
       .rpc();
+      
     console.log('Your transaction signature', tx);
 
-    const mergeAccountState = await program.account.mergeAccount.fetch(mergeAccount.publicKey);
-    const derivedDaoATokenAccount = await getAssociatedTokenAddress(
-      daoAMint,
-      daoA.publicKey
-    );
-    const derivedDaoBTokenAccount = await getAssociatedTokenAddress(
-      daoBMint,
-      daoB.publicKey
-    );
-
-    expect(mergeAccountState.exchangeRatio.toNumber()).toBe(100);
-    expect(mergeAccountState.treasuryA.toString()).toBe(derivedDaoATokenAccount.toString());
-    expect(mergeAccountState.treasuryB.toString()).toBe(derivedDaoBTokenAccount.toString());
-
-    console.log("TreasuryA is ", mergeAccountState.treasuryA.toString());
-    console.log("TreasuryB is ", mergeAccountState.treasuryB.toString());
-  });
-
-  it('Burns a DAOs treasury', async () => {
-    // Add your test here.
-    const tx = await program.methods
-      .burnDaoTreasury()
-      .accounts({
-        treasury: daoBurnOnlyTokenAccount,
-        mintTreasury: daoBurnOnlyMint,
-        treasuryAuthority: daoBurnOnly.publicKey,
-
-        tokenProgram: TOKEN_PROGRAM_ID,
-      })
-      .signers([daoBurnOnly])
-      .rpc();
-    console.log('Your transaction signature', tx);
-
-    const daoBurnOnlyBalanceAfter = await provider.connection.getTokenAccountBalance(daoBurnOnlyTokenAccount);
-    expect(Number(daoBurnOnlyBalanceAfter.value.amount)).toBe(0);
-    console.log("DAO Burn Only Token Account Balance after burn: ", daoBurnOnlyBalanceAfter.value.amount);
   });
 
   it('Will merge the treasuries', async () => {
     // Add your test here.
     const tx = await program.methods
-      .mergeDaoTreasury()
+      .mergeDaoTreasuries()
       .accounts({
         newMint: newTokenMint,
         mintTreasuryA: daoAMint,
@@ -196,14 +150,13 @@ describe('fusogen', () => {
         treasuryBAta: daoBTokenAccount,
         newTreasuryAAta: daoANewTokenAccount,
         newTreasuryBAta: daoBNewTokenAccount,
-        user: user.publicKey,
         treasuryAAuthority: daoA.publicKey,
         treasuryBAuthority: daoB.publicKey,
 
         tokenProgram: TOKEN_PROGRAM_ID,
         systemProgram: SystemProgram.programId,
       })
-      .signers([daoA, daoB, user])
+      .signers([daoA, daoB])
       .rpc();
     console.log('Your transaction signature', tx);
 

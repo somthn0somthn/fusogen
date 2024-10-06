@@ -5,7 +5,7 @@ import { ExplorerLink } from '../cluster/cluster-ui';
 import { WalletButton } from '../solana/solana-provider';
 import { AppHero, ellipsify } from '../ui/ui-layout';
 import { useFusogenProgram } from './fusogen-data-access';
-import { FusogenCreate, FusogenProgram } from './fusogen-ui';
+import { FusogenCreate, FusogenProgram } from './fusogen-ui'
 
 export default function FusogenFeature() {
   const { publicKey } = useWallet();
@@ -14,8 +14,8 @@ export default function FusogenFeature() {
   return publicKey ? (
     <div>
       <AppHero
-        title="Fusogen"
-        subtitle={'Run the program by clicking the "Run program" button.'}
+        title={<img src='/fusogen-text-wh.png' alt="Fusogen Logo" />} // Use the SVG logo here
+        subtitle=''
       >
         <p className="mb-6">
           <ExplorerLink

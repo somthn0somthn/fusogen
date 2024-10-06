@@ -14,104 +14,48 @@ export type Fusogen = {
   },
   "instructions": [
     {
-      "name": "burnDaoTreasury",
+      "name": "greet",
       "discriminator": [
-        59,
-        110,
-        98,
-        25,
-        52,
-        41,
-        137,
-        64
+        203,
+        194,
+        3,
+        150,
+        228,
+        58,
+        181,
+        62
       ],
       "accounts": [
         {
-          "name": "treasury",
-          "writable": true
+          "name": "mint"
         },
         {
-          "name": "mintTreasury",
-          "writable": true
+          "name": "ata"
         },
         {
-          "name": "treasuryAuthority",
+          "name": "user1",
           "signer": true
         },
         {
-          "name": "tokenProgram",
-          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+          "name": "user2",
+          "signer": true
         }
       ],
       "args": []
     },
     {
-      "name": "initializeMint",
+      "name": "mergeDaoTreasuries",
       "discriminator": [
-        209,
-        42,
-        195,
-        4,
-        129,
-        85,
-        209,
-        44
+        19,
+        135,
+        208,
+        28,
+        164,
+        212,
+        207,
+        98
       ],
       "accounts": [
-        {
-          "name": "mergeAccount",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "mint",
-          "writable": true
-        },
-        {
-          "name": "treasuryA",
-          "writable": true
-        },
-        {
-          "name": "treasuryB",
-          "writable": true
-        },
-        {
-          "name": "user",
-          "writable": true,
-          "signer": true
-        },
-        {
-          "name": "systemProgram",
-          "address": "11111111111111111111111111111111"
-        },
-        {
-          "name": "rent",
-          "address": "SysvarRent111111111111111111111111111111111"
-        },
-        {
-          "name": "tokenProgram",
-          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
-        }
-      ],
-      "args": []
-    },
-    {
-      "name": "mergeDaoTreasury",
-      "discriminator": [
-        187,
-        238,
-        241,
-        213,
-        229,
-        182,
-        144,
-        139
-      ],
-      "accounts": [
-        {
-          "name": "newMint",
-          "writable": true
-        },
         {
           "name": "mintTreasuryA",
           "writable": true
@@ -129,16 +73,16 @@ export type Fusogen = {
           "writable": true
         },
         {
+          "name": "newMint",
+          "writable": true
+        },
+        {
           "name": "newTreasuryAAta",
           "writable": true
         },
         {
           "name": "newTreasuryBAta",
           "writable": true
-        },
-        {
-          "name": "user",
-          "signer": true
         },
         {
           "name": "treasuryAAuthority",
@@ -158,47 +102,6 @@ export type Fusogen = {
         }
       ],
       "args": []
-    }
-  ],
-  "accounts": [
-    {
-      "name": "mergeAccount",
-      "discriminator": [
-        53,
-        217,
-        71,
-        70,
-        115,
-        27,
-        7,
-        64
-      ]
-    }
-  ],
-  "types": [
-    {
-      "name": "mergeAccount",
-      "type": {
-        "kind": "struct",
-        "fields": [
-          {
-            "name": "exchangeRatio",
-            "type": "u64"
-          },
-          {
-            "name": "mint",
-            "type": "pubkey"
-          },
-          {
-            "name": "treasuryA",
-            "type": "pubkey"
-          },
-          {
-            "name": "treasuryB",
-            "type": "pubkey"
-          }
-        ]
-      }
     }
   ]
 };
