@@ -1,8 +1,46 @@
 # fusogen
 
-This project is generated with the [create-solana-dapp](https://github.com/solana-developers/create-solana-dapp) generator.
+## What's Fusogen
+
+Fusogen is a platform designed to facilitate mergers and acquisitions (M&A) like actions for decentralized autonomous organizations (DAOs). As decentralized communities and blockchain-based entities grow, there is a growing need for DAOs to consolidate resources, collaborate, and merge effectively—much like traditional businesses. However, DAOs operate under different rules, relying on smart contracts and decentralized governance, so traditional M&A processes don’t apply. Fusogen addresses this gap by providing a framework to streamline the merging of DAOs, allowing them to combine assets, governance structures, and treasuries in a secure and automated manner. Simply put, Fusogen faciliates fair and secure value sharing across communities as they grow and evolve.
+
+## About the Application
+
+The Fusogen App is currently in a proof-of-concept status. The PoC demo approximately mimics a real-world "Merger of Equals," wherein two firms join forming a single new entity. Each community surrenders its original shares to receive new shares representing their combined enterprise. This is represnted on Fusogen as two DAOs burning the assets in their treasury in order to receive a newly created asset.
+
+Fusogen was born September 15th, following the Summer Encode Solana Bootcamp, and deployed to meet the Solana Colosseum Hackathon. Owing to this quick turnaround, the UI has some rough corners, but should still be simple enough to use for users familiar with the terminal and general Solana tools.Currently, the design is naive, require the user to manually enter account information. This will be refactored away shortly, but currently this repo contians scripts to make this process smooth. Setting up the scripts requires some basic setup, which is explained below.
+
 
 ## Getting Started
+
+Fusogen is live on devnet! You can see by following the url: (fusogen.io)[fusogen.io]. The easisiest way to interact with it in a test capacity is likely through cloning this repo locally, setting up a few environmental variables, and running a few scripts. You can also build Fusogen locally, run a local test validator, and interact with via your local setup. The choice is yours - finally, a live demo video is also availabe [INSERT LINK].
+
+Two interact with Fusogen, you will need:
+-some basically familiarity with the command line, Solana, and general web3 UI.
+-two test wallets - be sure these are test wallets. Its best if the can be pointed at your local validator or a custom rpc endpoint. Phantom and Backpack both accomplish this easily enough, IMO.
+-some test SOL - you can airdrop to yourself for localnet or use the Devnet faucet (here)[https://faucet.solana.com/].
+
+## Using Scripts for the Devnet Demo
+
+The scripts require your to include your private keys in your .env file. They can be taken from your test wallets easily enough, and should be formatted like this in your .env:
+
+<wallet 1>
+`SECRET_PHRASE_ONE=apple banana orange mango grape lemon kiwi tomato cucumber lettuce carrot melon` 
+
+<wallet 2>
+`SECRET_PHRASE_TWO=lion tiger elephant giraffe panda zebra monkey rabbit dolphin eagle fox cat`
+
+Be sure to add your .env to your .gitignore, especially if you will be pushing this remotely. Exposing these keys will compromise your wallet and funds, so its 100% critical these be test wallets + test funds and should hold no real value. These wallets affectively act as the signing authority for the DAOs and their treasuries, which is why the scripts require them. 
+
+Finally, run the scripts using npx esrun in this order
+
+-$npx esrun mintA-startup-from-secret.tsx
+-$npx esrun mintB-startup-from-secret.tsx
+-$npx esrun create-new-mint.tsx
+
+Collect the outputted newly create account addresses, input them into the Fusogen app, and sign with both wallets. You will need to switch wallets on your browser after signing with the first, but do not need to reinput the account into the form fields. This is because the transaciton is partially-signed, serialized, and stored locally. The second wallet already has a trasaction with the required info, and only needs to sign in order to submit. You can see the transact output by using the browser console and check on your favorite explored
+
+## Building the App locally
 
 ### Prerequisites
 
@@ -17,8 +55,8 @@ This project is generated with the [create-solana-dapp](https://github.com/solan
 #### Clone the repo
 
 ```shell
-git clone <repo-url>
-cd <repo-name>
+git clone https://github.com/somthn0somthn/fusogen.git
+cd fusogen
 ```
 
 #### Install Dependencies
