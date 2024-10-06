@@ -32,7 +32,10 @@ import {
     const keypair = Keypair.fromSeed(derivedSeed.slice(0, 32));
   
     // Step 4: Set up Solana connection
-    const connection = new Connection('http://127.0.0.1:8899', 'confirmed');
+    //localnet
+    //const connection = new Connection('http://127.0.0.1:8899', 'confirmed');
+    //devnet
+    const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
     console.log("Wallet public key:", keypair.publicKey.toBase58());
   
     // Airdrop some SOL to the wallet for testing purposes

@@ -14,36 +14,6 @@ export type Fusogen = {
   },
   "instructions": [
     {
-      "name": "greet",
-      "discriminator": [
-        203,
-        194,
-        3,
-        150,
-        228,
-        58,
-        181,
-        62
-      ],
-      "accounts": [
-        {
-          "name": "mint"
-        },
-        {
-          "name": "ata"
-        },
-        {
-          "name": "user1",
-          "signer": true
-        },
-        {
-          "name": "user2",
-          "signer": true
-        }
-      ],
-      "args": []
-    },
-    {
       "name": "mergeDaoTreasuries",
       "discriminator": [
         19,

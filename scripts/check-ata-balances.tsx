@@ -5,13 +5,17 @@ dotenv.config({ path: '../.env' });
 
 (async () => {
   // Step 1: Set up Solana connection
-  const connection = new Connection('http://127.0.0.1:8899', 'confirmed');
+  //localnet
+  //const connection = new Connection('http://127.0.0.1:8899', 'confirmed');
+  //devnet
+  const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
+
 
   // Step 2: Provide the relevant token account public keys here
-  const oldTreasuryATokenAccountStr = '2yV42nCdG2BqkbFpQnCe3BoYhpzMbuMks9omQxXKNyNB';
-  const oldTreasuryBTokenAccountStr = 'Fiijk2EpVZiDFhuUfFPmGscydqvppTxB57Jaz7ANU2Jr';
-  const newTreasuryATokenAccountStr = '8NcwStYBxidYx4B4pjw2TCdy6BVquy4NsYzrvU4WDULe';
-  const newTreasuryBTokenAccountStr = '73NBd8fhddmBrqgUScLaJxnvVxvYStz4KiQUq6gaVtGQ';
+  const oldTreasuryATokenAccountStr = 'qBrEX4TDn1J4cX3VRwj7jdYocemc7Akx1T7t772bHL3';
+  const oldTreasuryBTokenAccountStr = 'GXjsuXsiifPabgEVT7ye4rreSaQz1ijSpL51ocNMax3r';
+  const newTreasuryATokenAccountStr = 'B5wV1qskeYtwMsbBsEdAXS6ZVi2wysW2qqXQNafBf8c';
+  const newTreasuryBTokenAccountStr = 'BfbiHin6R3EhzNxJ64q5TZtyCBg6tgSZEA7ATe42fXJq';
 
   // Convert string to PublicKey
   const oldTreasuryATokenAccount = new PublicKey(oldTreasuryATokenAccountStr);
