@@ -13,24 +13,28 @@ Fusogen was born September 15th, following the Summer Encode Solana Bootcamp, an
 
 ## Getting Started
 
-Fusogen is live on devnet! You can see by following the url: (fusogen.io)[fusogen.io]. The easisiest way to interact with it in a test capacity is likely through cloning this repo locally, setting up a few environmental variables, and running a few scripts. You can also build Fusogen locally, run a local test validator, and interact with via your local setup. The choice is yours - finally, a live demo video is also availabe [INSERT LINK].
+Fusogen is live on devnet! You can see by following the url: [fusogen.io](fusogen.io). The easisiest way to interact with it in a test capacity is likely through cloning this repo locally, setting up a few environmental variables, and running a few scripts. You can also build Fusogen locally, run a local test validator, and interact with via your local setup. The choice is yours, just make sure the wallets your are using are pointed at the appropriate cluster - finally, a live demo video is also availabe [INSERT LINK].
 
 Two interact with Fusogen, you will need:
--some basically familiarity with the command line, Solana, and general web3 UI.
--two test wallets - be sure these are test wallets. Its best if the can be pointed at your local validator or a custom rpc endpoint. Phantom and Backpack both accomplish this easily enough, IMO.
--some test SOL - you can airdrop to yourself for localnet or use the Devnet faucet (here)[https://faucet.solana.com/].
+- some basically familiarity with the command line, Solana, and general web3 UI.
+- two test wallets - be sure these are test wallets. Its best if the can be pointed at your local validator or a custom rpc endpoint. Phantom and Backpack both accomplish this easily enough, IMO.
+- some test SOL - you can airdrop to yourself for localnet or use the Devnet faucet [here](https://faucet.solana.com/).
 
 ## Using Scripts for the Devnet Demo
 
-The scripts require your to include your private keys in your .env file. They can be taken from your test wallets easily enough, and should be formatted like this in your .env:
+The scripts require your to include your private keys in your `.env` file. They can be taken from your test wallets easily enough, and should be formatted like this in your `.env`:
 
-<wallet 1>
-`SECRET_PHRASE_ONE=apple banana orange mango grape lemon kiwi tomato cucumber lettuce carrot melon` 
+```code
+#wallet 1
+SECRET_PHRASE_ONE=apple banana orange mango grape lemon kiwi tomato cucumber lettuce carrot melon
+```
 
-<wallet 2>
-`SECRET_PHRASE_TWO=lion tiger elephant giraffe panda zebra monkey rabbit dolphin eagle fox cat`
+```code
+#wallet 2>
+SECRET_PHRASE_TWO=lion tiger elephant giraffe panda zebra monkey rabbit dolphin eagle fox cat
+```
 
-Be sure to add your .env to your .gitignore, especially if you will be pushing this remotely. Exposing these keys will compromise your wallet and funds, so its 100% critical these be test wallets + test funds and should hold no real value. These wallets affectively act as the signing authority for the DAOs and their treasuries, which is why the scripts require them. 
+Be sure to add your `.env` to your `.gitignore`, especially if you will be pushing this remotely. Exposing these keys will compromise your wallet and its funds, so its 100% critical these be test wallets + test funds and should hold no real value or in no way be used for real interactions with mainnet. These wallets affectively act as the signing authority for the DAOs and their treasuries, which is why the scripts require them. 
 
 Finally, run the scripts using npx esrun in this order
 
@@ -40,7 +44,7 @@ $npx esrun mintB-startup-from-secret.tsx
 $npx esrun create-new-mint.tsx
 ```
 
-Collect the outputted newly create account addresses, input them into the Fusogen app, and sign with both wallets. You will need to switch wallets on your browser after signing with the first, but do not need to reinput the account into the form fields. This is because the transaciton is partially-signed, serialized, and stored locally. The second wallet already has a trasaction with the required info, and only needs to sign in order to submit. You can see the transact output by using the browser console and check on your favorite explored
+Collect the outputted newly create account addresses, input them into the Fusogen app, and sign with both wallets. You will need to switch wallets on your browser after signing with the first, but you do not need to reinput the account info into the form fields. This is because the transaciton is partially-signed, serialized, and stored locally. The second wallet already has a trasaction with the required info, and only needs to sign in order to submit. You can see the transaction output by using the browser console and check on your favorite explored.
 
 ## Building the App locally
 
