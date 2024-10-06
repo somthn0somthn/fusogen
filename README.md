@@ -30,7 +30,7 @@ SECRET_PHRASE_ONE=apple banana orange mango grape lemon kiwi tomato cucumber let
 ```
 
 ```code
-#wallet 2>
+#wallet 2
 SECRET_PHRASE_TWO=lion tiger elephant giraffe panda zebra monkey rabbit dolphin eagle fox cat
 ```
 
