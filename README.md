@@ -34,9 +34,11 @@ Be sure to add your .env to your .gitignore, especially if you will be pushing t
 
 Finally, run the scripts using npx esrun in this order
 
--$npx esrun mintA-startup-from-secret.tsx
--$npx esrun mintB-startup-from-secret.tsx
--$npx esrun create-new-mint.tsx
+```shell
+$npx esrun mintA-startup-from-secret.tsx
+$npx esrun mintB-startup-from-secret.tsx
+$npx esrun create-new-mint.tsx
+```
 
 Collect the outputted newly create account addresses, input them into the Fusogen app, and sign with both wallets. You will need to switch wallets on your browser after signing with the first, but do not need to reinput the account into the form fields. This is because the transaciton is partially-signed, serialized, and stored locally. The second wallet already has a trasaction with the required info, and only needs to sign in order to submit. You can see the transact output by using the browser console and check on your favorite explored
 
