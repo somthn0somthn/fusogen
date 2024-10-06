@@ -27,25 +27,6 @@ export function useFusogenProgram() {
     queryFn: () => connection.getParsedAccountInfo(programId),
   });
 
-  const greet = useMutation({
-    mutationKey: ['fusogen', 'greet', { cluster }],
-    mutationFn: async ({ mint, ata, user1, user2 }: { mint: PublicKey, ata: PublicKey, user1: Keypair, user2: Keypair }) => 
-      program.methods
-        .greet()
-        .accounts({
-          mint,
-          ata,
-          user1: user1.publicKey,  // Signer 1
-          user2: user2.publicKey,  // Signer 2
-        })
-        .signers([user1, user2]) // Adding signers here
-        .rpc(),
-    onSuccess: (signature) => {
-      transactionToast(signature);
-    },
-    onError: () => toast.error('Failed to run the program'),
-  });
-
   const mergeDaoTreasuries = useMutation({
     mutationKey: ['fusogen', 'mergeDaoTreasuries', { cluster }],
     mutationFn: async ({
@@ -94,7 +75,6 @@ export function useFusogenProgram() {
     program,
     programId,
     getProgramAccount,
-    greet,
     mergeDaoTreasuries
   };
 }
