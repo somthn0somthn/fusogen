@@ -7,22 +7,6 @@ declare_id!("8u5DoSAV7cZxQAPYumVRZCJeYoijkkjCHsGgC6gKyp4m");
 #[program]
 pub mod fusogen {
     use super::*;   
-
-    pub fn greet(ctx: Context<Greet>) -> Result<()> {
-        // For frontend testing purposes
-        msg!("Greetings from: {:?}", ctx.program_id);
-        msg!("THIS is wallet1 {:?}", ctx.accounts.user1.key());
-        msg!("THIS is wallet2 {:?}", ctx.accounts.user2.key());
-        
-        let mint_address = ctx.accounts.mint.key();
-        msg!("Mint address is {}", mint_address);
-    
-        let ata_balance = ctx.accounts.ata.amount;
-        msg!("ATA balance is {}", ata_balance);
-    
-        Ok(())
-    }
-
    
     //TODO parameterize the token payout ammounts
     pub fn merge_dao_treasuries(ctx: Context<MergeTreasuries>) -> Result<()> {
@@ -103,18 +87,4 @@ pub struct MergeTreasuries<'info> {
     
     pub token_program: Program<'info, Token>, 
     pub system_program: Program<'info, System>,
-}
-
-//remove this after testing 
-#[derive(Accounts)]
-pub struct Greet<'info> {
-    pub mint: Account<'info, Mint>,
-    #[account(
-        constraint = ata.mint == mint.key()
-    )]
-    pub ata: Account<'info, TokenAccount>,
-    #[account(signer)]
-    pub user1: Signer<'info>,
-    #[account(signer)]
-    pub user2: Signer<'info>,
 }

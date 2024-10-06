@@ -39,16 +39,19 @@ import {
     const walletBKeypair = Keypair.fromSeed(derivedSeedB.slice(0, 32));
   
     // Step 4: Set up Solana connection
-    const connection = new Connection('http://127.0.0.1:8899', 'confirmed');
+    //localnet
+    //const connection = new Connection('http://127.0.0.1:8899', 'confirmed');
+    //devnet
+    const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
     console.log("Wallet A public key:", walletAKeypair.publicKey.toBase58());
     console.log("Wallet B public key:", walletBKeypair.publicKey.toBase58());
   
     // Step 5: Airdrop SOL to both wallets for testing purposes
-    const airdropSignatureA = await connection.requestAirdrop(walletAKeypair.publicKey, 10 * LAMPORTS_PER_SOL);
-    await connection.confirmTransaction(airdropSignatureA);
+    //const airdropSignatureA = await connection.requestAirdrop(walletAKeypair.publicKey, 10 * LAMPORTS_PER_SOL);
+    //await connection.confirmTransaction(airdropSignatureA);
     
-    const airdropSignatureB = await connection.requestAirdrop(walletBKeypair.publicKey, 10 * LAMPORTS_PER_SOL);
-    await connection.confirmTransaction(airdropSignatureB);
+    //const airdropSignatureB = await connection.requestAirdrop(walletBKeypair.publicKey, 10 * LAMPORTS_PER_SOL);
+    //await connection.confirmTransaction(airdropSignatureB);
   
     // Step 6: Create the new mint with Wallet A as the mint authority
     const newMint = await createMint(connection, walletAKeypair, walletAKeypair.publicKey, null, 9); // Decimals set to 9 for token precision
