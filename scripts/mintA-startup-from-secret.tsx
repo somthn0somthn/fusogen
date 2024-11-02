@@ -39,8 +39,8 @@ import {
     console.log("Wallet public key:", keypair.publicKey.toBase58());
   
     // Airdrop some SOL to the wallet for testing purposes
-    const airdropSignature = await connection.requestAirdrop(keypair.publicKey, 10 * LAMPORTS_PER_SOL);
-    await connection.confirmTransaction(airdropSignature);
+    //const airdropSignature = await connection.requestAirdrop(keypair.publicKey, 10 * LAMPORTS_PER_SOL);
+    //await connection.confirmTransaction(airdropSignature);
   
     // Step 5: Create DAO A and DAO B mints and their associated token accounts
     const mintA = await createMint(connection, keypair, keypair.publicKey, null, 9);
