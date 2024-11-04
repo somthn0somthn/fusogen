@@ -1,14 +1,15 @@
 use anchor_lang::prelude::*;
-//pub mod error;
-//pub mod constants;
+
 pub mod state;
 pub mod instructions;
 pub mod error;
+pub mod message;
 
 use instructions::*;
 use state::*;
+use wormhole_anchor_sdk::wormhole;
 
-declare_id!("8u5DoSAV7cZxQAPYumVRZCJeYoijkkjCHsGgC6gKyp4m");
+declare_id!("J6Lyd68nbS4k4qKxgRmXShYm56hZqMVft83T5uuqdyAT");
 
 #[program]
 pub mod fusogen {
@@ -18,13 +19,11 @@ pub mod fusogen {
         instructions::merge::merge_dao_treasuries(ctx)
     }
 
-    pub fn simulate_receive_terms(
-        ctx: Context<SimulateReceiveMergeTerms>, 
-        proposing_dao: [u8; 32],
-        proposed_ratio: u64,
-        expiry: i64
+    pub fn receive_merge_terms(
+        ctx: Context<ReceiveMergeTerms>,
+        vaa_hash: [u8; 32]
     ) -> Result<()> {
-        instructions::terms::simulate_receive_terms(ctx, proposing_dao, proposed_ratio, expiry)
+        instructions::terms::receive_merge_terms(ctx, vaa_hash)
     }
 
     pub fn respond_to_terms(
@@ -34,12 +33,24 @@ pub mod fusogen {
         instructions::terms::respond_to_terms(ctx, accept)
     }
 
-    // New instruction handlers will go here
-   /*  pub fn propose_merge_terms(ctx: Context<ProposeMergeTerms>, terms: MergeTerms) -> Result<()> {
-        instructions::terms::propose_merge_terms(ctx, terms)
-    }
+}
 
-    pub fn accept_merge_terms(ctx: Context<AcceptMergeTerms>) -> Result<()> {
-        instructions::terms::accept_merge_terms(ctx)
-    } */
+#[cfg(test)]
+mod test {
+    use super::*;
+    
+    #[test]
+    fn test_wormhole_integration() {
+        // Test chain ID constant
+        let chain_id = wormhole::CHAIN_ID_SOLANA;
+        assert_eq!(chain_id, 1);
+        
+        // Test some Wormhole seed constants
+        assert_eq!(wormhole::SEED_PREFIX_POSTED_VAA, b"PostedVAA");
+        assert_eq!(wormhole::SEED_PREFIX_EMITTER, b"emitter");
+        
+        // Test that we can access Wormhole program ID
+        let program_id = wormhole::program::ID;
+        assert!(program_id.to_string().len() > 0);
+    }
 }

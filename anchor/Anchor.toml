@@ -2,17 +2,17 @@
 anchor_version = "0.30.1"
 
 [features]
-seeds = false
+resolution = true
 skip-lint = false
 
 [programs.devnet]
-fusogen = "8u5DoSAV7cZxQAPYumVRZCJeYoijkkjCHsGgC6gKyp4m"
+fusogen = "J6Lyd68nbS4k4qKxgRmXShYm56hZqMVft83T5uuqdyAT"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "Localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]
