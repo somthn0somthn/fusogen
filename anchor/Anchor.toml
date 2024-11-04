@@ -12,7 +12,7 @@ fusogen = "8u5DoSAV7cZxQAPYumVRZCJeYoijkkjCHsGgC6gKyp4m"
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "devnet"
+cluster = "localnet"
 wallet = "~/.config/solana/id.json"
 
 [scripts]

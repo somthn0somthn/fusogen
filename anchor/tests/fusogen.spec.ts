@@ -1,5 +1,5 @@
 import * as anchor from '@coral-xyz/anchor';
-import { Program } from '@coral-xyz/anchor';
+import { BN, Program } from '@coral-xyz/anchor';
 import { Fusogen } from '../target/types/fusogen';
 import {
   LAMPORTS_PER_SOL,
@@ -34,6 +34,7 @@ describe('fusogen', () => {
   let daoAMint: PublicKey;
   let daoBMint: PublicKey;
   let daoBurnOnlyMint: PublicKey;
+  let solanaDao: PublicKey;
 
   let newTokenMint: PublicKey;
   let daoATokenAccount: PublicKey;
@@ -121,23 +122,6 @@ describe('fusogen', () => {
     console.log("DAO B **NEW** Token Account Balance: ", daoBNewTokenBalance.value.amount);
   })
 
-  it('Greets', async () => {
-    // Add your test here.
-    const tx = await program.methods
-      .greet()
-      .accounts({
-        mint: daoAMint,
-        ata: daoATokenAccount,
-        user1: daoA.publicKey,
-        user2: daoB.publicKey,
-      })
-      .signers([daoA, daoB])
-      .rpc();
-      
-    console.log('Your transaction signature', tx);
-
-  });
-
   it('Will merge the treasuries', async () => {
     // Add your test here.
     const tx = await program.methods
@@ -177,4 +161,66 @@ describe('fusogen', () => {
     console.log("DAO A ::NEW:: Token Account Balance after burn: ", daoANewTokenBalanceAfter.value.amount);
     console.log("DAO B ::NEW:: Token Account Balance after burn: ", daoBNewTokenBalanceAfter.value.amount);
   });
+
+  it('Will simulate receiving terms from Wormhole', async () => {
+    const proposingDao = Buffer.alloc(32, "proposer");
+    const proposedRatio = new BN(100);
+    const expiry = new BN(Date.now() / 1000 + 3000);
+
+    // First derive the PDA for the proposal account
+    const [proposalPda, _bump] = await PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("proposal"),
+        provider.wallet.publicKey.toBytes()  // this matches our seeds in the instruction
+      ],
+      program.programId
+    );
+
+    // Send the transaction
+    const tx = await program.methods
+      .simulateReceiveTerms(
+        proposingDao,
+        proposedRatio,
+        expiry
+      )
+      .accounts({
+        payer: provider.wallet.publicKey,  
+        proposal: proposalPda,
+        systemProgram: SystemProgram.programId,
+      })
+      .rpc();
+
+    console.log('Simulated receive terms transaction:', tx);
+
+    const proposalAccount = await program.account.proposedMerge.fetch(proposalPda);
+    expect(proposalAccount.sourceChain).toBe(6); // Avalanche chain ID
+    expect(proposalAccount.status).toEqual({ pending: {} });
+    expect(Buffer.from(proposalAccount.terms.proposingDao)).toEqual(proposingDao);
+    expect(proposalAccount.terms.proposedRatio.eq(proposedRatio)).toBe(true);
+    expect(proposalAccount.terms.expiry.eq(expiry)).toBe(true);
+  });
+
+  it('Will respond to the terms with acceptance', async ()  => {
+    const acceptance = true;
+
+    const [proposalPda, _bump] = await PublicKey.findProgramAddressSync(
+      [
+        Buffer.from("proposal"),
+        provider.wallet.publicKey.toBytes()
+      ],
+      program.programId
+    );
+
+    const tx = await program.methods
+      .respondToTerms({
+        accept: acceptance
+      })
+      .rpc();
+
+    console.log('Terms responded to with acceptance tx', tx);
+
+    const proposalAccount = await program.account.proposedMerge.fetch(proposalPda);
+    expect(proposalAccount.status).toEqual({ accepted: {} });
+  });
+
 });

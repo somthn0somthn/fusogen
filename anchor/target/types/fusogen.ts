@@ -72,6 +72,219 @@ export type Fusogen = {
         }
       ],
       "args": []
+    },
+    {
+      "name": "respondToTerms",
+      "discriminator": [
+        58,
+        133,
+        159,
+        213,
+        1,
+        249,
+        236,
+        199
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "proposal",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  112,
+                  111,
+                  115,
+                  97,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "authority"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [
+        {
+          "name": "accept",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "simulateReceiveTerms",
+      "discriminator": [
+        103,
+        246,
+        159,
+        81,
+        45,
+        121,
+        222,
+        50
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "proposal",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  112,
+                  114,
+                  111,
+                  112,
+                  111,
+                  115,
+                  97,
+                  108
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "payer"
+              }
+            ]
+          }
+        },
+        {
+          "name": "systemProgram",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "proposingDao",
+          "type": {
+            "array": [
+              "u8",
+              32
+            ]
+          }
+        },
+        {
+          "name": "proposedRatio",
+          "type": "u64"
+        },
+        {
+          "name": "expiry",
+          "type": "i64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "proposedMerge",
+      "discriminator": [
+        133,
+        49,
+        98,
+        10,
+        127,
+        195,
+        185,
+        218
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "proposalNotPending",
+      "msg": "Proposal is not in pending status"
+    }
+  ],
+  "types": [
+    {
+      "name": "mergeTerms",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "proposingDao",
+            "type": {
+              "array": [
+                "u8",
+                32
+              ]
+            }
+          },
+          {
+            "name": "proposedRatio",
+            "type": "u64"
+          },
+          {
+            "name": "expiry",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "proposalStatus",
+      "type": {
+        "kind": "enum",
+        "variants": [
+          {
+            "name": "pending"
+          },
+          {
+            "name": "accepted"
+          },
+          {
+            "name": "declined"
+          }
+        ]
+      }
+    },
+    {
+      "name": "proposedMerge",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "sourceChain",
+            "type": "u16"
+          },
+          {
+            "name": "terms",
+            "type": {
+              "defined": {
+                "name": "mergeTerms"
+              }
+            }
+          },
+          {
+            "name": "status",
+            "type": {
+              "defined": {
+                "name": "proposalStatus"
+              }
+            }
+          }
+        ]
+      }
     }
   ]
 };
