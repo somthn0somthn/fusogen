@@ -6,7 +6,7 @@ Fusogen is a platform designed to facilitate mergers and acquisitions (M&A) like
 
 ## About the Application
 
-The Fusogen App is currently in a proof-of-concept status. The PoC demo approximately mimics a real-world "Merger of Equals," wherein two firms join forming a single new entity. Each community surrenders its original shares to receive new shares representing their combined enterprise. This is represnted on Fusogen as two DAOs burning the assets in their treasury in order to receive a newly created asset.
+The Fusogen App is currently in a proof-of-concept status. The PoC demo approximately mimics a real-world "Merger of Equals," wherein two firms join forming a single new entity. Each community surrenders its original shares to receive new shares representing their combined enterprise. This is represnted on Fusogen as two DAOs burning the assets in their treasury in order to receive a newly created asset. See the [Loom presentation](https://www.loom.com/share/643e4931f83f4ee299340a81234b12cc?sid=d5d0b95c-6600-42e0-a725-f73b79e7e206) for a quick overview & demo.
 
 Fusogen was born September 15th, following the [Summer Encode Solana Bootcamp](https://www.encode.club/solana-summer-bootcamp), and deployed to meet the Solana Colosseum Hackathon. Owing to this quick turnaround, the UI has some rough corners, but should still be simple enough to use for users familiar with the terminal and general Solana tools.Currently, the design is naive, require the user to manually enter account information. This will be refactored away shortly, but currently this repo contians scripts to make this process smooth. Setting up the scripts requires some basic setup, which is explained below.
 
