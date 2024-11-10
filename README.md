@@ -13,7 +13,7 @@ Fusogen was born September 15th, following the [Summer Encode Solana Bootcamp](h
 
 ## Getting Started
 
-Fusogen is live on devnet! You can see by following the url: [fusogen.io](fusogen.io). The easisiest way to interact with it in a test capacity is likely through cloning this repo locally, setting up a few environmental variables, and running a few scripts. You can also build Fusogen locally, run a local test validator, and interact with via your local setup. The choice is yours, just make sure the wallets your are using are pointed at the appropriate cluster - finally, a live demo video is also availabe via this [Loom presentation][Loom presentation](https://www.loom.com/share/643e4931f83f4ee299340a81234b12cc?sid=d5d0b95c-6600-42e0-a725-f73b79e7e206).
+Fusogen is live on devnet! You can see by following the url: [fusogen.io](fusogen.io). The easisiest way to interact with it in a test capacity is likely through cloning this repo locally, setting up a few environmental variables, and running a few scripts. You can also build Fusogen locally, run a local test validator, and interact with via your local setup. The choice is yours, just make sure the wallets your are using are pointed at the appropriate cluster - finally, a live demo video is also availabe via this [Loom presentation](https://www.loom.com/share/643e4931f83f4ee299340a81234b12cc?sid=d5d0b95c-6600-42e0-a725-f73b79e7e206).
 
 Two interact with Fusogen, you will need:
 - some basically familiarity with the command line, Solana, and general web3 UI.
