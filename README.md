@@ -44,7 +44,7 @@ $npx esrun mintB-startup-from-secret.tsx
 $npx esrun create-new-mint.tsx
 ```
 
-Collect the outputted newly create account addresses, input them into the Fusogen app, and sign with both wallets. You will need to switch wallets on your browser after signing with the first, but you do not need to reinput the account info into the form fields. This is because the transaciton is partially-signed, serialized, and stored locally. The second wallet already has a trasaction with the required info, and only needs to sign in order to submit. You can see the transaction output by using the browser console and check on your favorite explored.
+Collect the outputted newly create account addresses, input them into the Fusogen app, and sign with both wallets. You will need to switch wallets on your browser after signing with the first, but you do not need to reinput the account info into the form fields. This is because the transaciton is partially-signed, serialized, and stored locally. The second wallet already has a trasaction with the required info, and only needs to sign in order to submit. You can see the transaction output by using the browser console and check on your favorite block explorer.
 
 ## Building the App locally
 
