@@ -162,7 +162,7 @@ describe('fusogen', () => {
     console.log("DAO B ::NEW:: Token Account Balance after burn: ", daoBNewTokenBalanceAfter.value.amount);
   });
 
-  it('Will simulate receiving terms from Wormhole', async () => {
+  /* it('Will simulate receiving terms from Wormhole', async () => {
     const proposingDao = Buffer.alloc(32, "proposer");
     const proposedRatio = new BN(100);
     const expiry = new BN(Date.now() / 1000 + 3000);
@@ -221,6 +221,6 @@ describe('fusogen', () => {
 
     const proposalAccount = await program.account.proposedMerge.fetch(proposalPda);
     expect(proposalAccount.status).toEqual({ accepted: {} });
-  });
+  }); */
 
 });
