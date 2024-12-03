@@ -52,6 +52,8 @@ describe("Wormhole Environment Setup", () => {
             expect(mint).toEqual(publicKey);
 
             const { decimals } = await getMint(connection, mint);
+
+            console.log("TEH DECIMALS", decimals)
             expect(decimals).toBe(mintDecimals);
           }
         )
